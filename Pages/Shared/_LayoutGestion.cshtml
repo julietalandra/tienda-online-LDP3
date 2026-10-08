@@ -1,0 +1,37 @@
+@{
+    string actual = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+    string Clase(string pagina) => actual == pagina ? "nav-link activo" : "nav-link";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>@ViewData["Title"] · Commit Store</title>
+    <link rel="icon" href="~/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/gestion.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+    <header class="cabecera">
+        <div class="contenedor cabecera-interior">
+            <a class="marca" asp-page="/Index" aria-label="Commit Store, inicio">
+                <span class="marca-nombre">&gt;_ Commit Store</span>
+                <span class="marca-descripcion">Gestión de productos</span>
+            </a>
+            <nav id="navegacion" class="navegacion" aria-label="Navegación principal">
+                <a class="@Clase("/Index")" asp-page="/Index" aria-current="@(actual == "/Index" ? "page" : null)">Inicio</a>
+                <a class="@Clase("/Gestion/Alta")" asp-page="/Gestion/Alta" aria-current="@(actual == "/Gestion/Alta" ? "page" : null)">Alta</a>
+                <a class="@Clase("/Gestion/Consulta")" asp-page="/Gestion/Consulta" aria-current="@(actual == "/Gestion/Consulta" ? "page" : null)">Consulta</a>
+                <a class="@Clase("/Gestion/Modificacion")" asp-page="/Gestion/Modificacion" aria-current="@(actual == "/Gestion/Modificacion" ? "page" : null)">Modificación</a>
+                <a class="@Clase("/Gestion/Baja")" asp-page="/Gestion/Baja" aria-current="@(actual == "/Gestion/Baja" ? "page" : null)">Baja</a>
+            </nav>
+        </div>
+    </header>
+    <div class="contenedor cuerpo">
+        <main id="contenido" tabindex="-1">@RenderBody()</main>
+        <footer class="pie">Commit Store · Herramienta interna</footer>
+    </div>
+</body>
+</html>

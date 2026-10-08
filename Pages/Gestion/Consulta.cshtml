@@ -1,0 +1,40 @@
+@page
+@model TiendaOnline_LDP3.Pages.Gestion.ConsultaModel
+@{ ViewData["Title"] = "Consulta de productos"; }
+
+<a class="volver" asp-page="/Index"><span aria-hidden="true">←</span> Volver al inicio</a>
+<header class="encabezado-pagina"><h1>Consulta de productos</h1><p>Buscá por nombre o filtrá por categoría.</p></header>
+<form class="filtros" method="post">
+    <div class="campo">
+        <label asp-for="Nombre">Nombre</label>
+        <div class="buscador"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#search"></use></svg><input asp-for="Nombre" placeholder="Buscar por nombre" maxlength="100" /></div>
+        <span asp-validation-for="Nombre" class="error-campo"></span>
+    </div>
+    <div class="campo"><label asp-for="Categoria">Categoría</label>
+        <select asp-for="Categoria" asp-items="Model.Categorias"><option value="">Todas las categorías</option>
+        </select><span asp-validation-for="Categoria" class="error-campo"></span>
+    </div>
+    <button class="boton boton-primario" type="submit">Buscar</button>
+</form>
+<p class="cantidad" role="status">@Model.Productos.Count @(Model.Productos.Count == 1 ? "producto encontrado" : "productos encontrados")</p>
+@if (Model.Productos.Count == 0)
+{
+    <section class="panel vacio"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#empty"></use></svg>
+        <h2>No se encontraron productos</h2><p>Probá con otro nombre o cambiá la categoría.</p>
+        <a class="boton boton-secundario" asp-page="./Consulta">Limpiar filtros</a>
+    </section>
+}
+else
+{
+    <div class="tabla-contenedor"><table class="tabla-productos">
+        <caption class="solo-lector">Productos del catálogo con su categoría y precio</caption>
+        <thead><tr><th scope="col">Código</th><th scope="col">Nombre</th><th scope="col" class="precio">Precio</th><th scope="col">Categoría</th></tr></thead>
+        <tbody>
+        @foreach (var producto in Model.Productos)
+        {
+            <tr><td class="codigo">@producto.Codigo</td><td class="nombre-producto">@producto.Nombre</td>
+            <td class="precio">@producto.PrecioMoneda</td><td class="categoria-producto">@producto.CategoriaDescripcion</td></tr>
+        }
+        </tbody>
+    </table></div>
+}

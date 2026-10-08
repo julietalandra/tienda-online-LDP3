@@ -1,0 +1,50 @@
+@page
+@model TiendaOnline_LDP3.Pages.Gestion.BajaModel
+@{ ViewData["Title"] = "Baja de producto"; }
+
+<a class="volver" asp-page="/Index"><span aria-hidden="true">←</span> Volver al inicio</a>
+<header class="encabezado-pagina"><h1>Baja de producto</h1><p>Seleccioná un producto y revisá sus datos antes de eliminarlo.</p></header>
+<section class="panel panel-formulario" aria-label="Baja de producto">
+@if (Model.Eliminado)
+{
+    <partial name="_Aviso" model="Model.Aviso!" />
+    <a class="boton boton-secundario" asp-page="./Baja">Seleccionar otro producto</a>
+}
+else
+{
+
+<form method="post">
+
+    <div class="campo"><label asp-for="Id">Producto</label>
+        <select asp-for="Id" asp-items="Model.Productos" aria-describedby="producto-ayuda">
+            <option value="">Seleccioná un producto</option>
+        </select>
+        <p class="ayuda" id="producto-ayuda">Seleccioná un producto del catálogo y presioná Buscar.</p>
+        <span asp-validation-for="Id" class="error-campo"></span>
+    </div>
+    <button type="submit" class="boton boton-secundario" name="Accion" value="Buscar">Buscar</button>
+    <input type="hidden" asp-for="IdCargado" />
+
+
+    @if (Model.Aviso != null) { <partial name="_Aviso" model="Model.Aviso" /> }
+    @if (Model.Seleccionado != null)
+    {
+        <div class="separador"></div><h2 class="titulo-panel">Producto seleccionado</h2>
+        <dl class="resumen-producto">
+            <div><dt>Código</dt><dd class="codigo">@Model.Seleccionado.Codigo</dd></div>
+            <div><dt>Nombre</dt><dd>@Model.Seleccionado.Nombre</dd></div>
+            <div><dt>Precio</dt><dd>@Model.Seleccionado.PrecioMoneda</dd></div>
+            <div><dt>Categoría</dt><dd>@Model.Seleccionado.CategoriaDescripcion</dd></div>
+        </dl>
+
+            <div class="confirmacion"><strong>¿Querés eliminar este producto?</strong><p>Esta acción no se puede deshacer.</p></div>
+            <div class="botones-baja">
+                <button class="boton boton-peligro" type="submit" name="Accion" value="Eliminar"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#trash"></use></svg>Eliminar</button>
+                <a class="boton boton-secundario" asp-page="./Baja">Cancelar</a>
+            </div>
+    }
+    else
+    { <p class="texto-secundario instruccion">@(Model.Productos.Count == 0 ? "No hay productos para eliminar." : "Elegí un producto para revisar sus datos.")</p> }
+</form>
+}
+</section>

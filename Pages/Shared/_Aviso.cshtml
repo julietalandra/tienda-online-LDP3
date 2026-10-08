@@ -1,0 +1,7 @@
+@model Aviso
+<div class="aviso aviso--@Model.Tipo" role="@(Model.Tipo == "error" ? "alert" : "status")">
+    <svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#@(Model.Tipo == "exito" ? "check" : "info")"></use></svg>
+    <div><strong>@Model.Titulo</strong>
+    @if (!string.IsNullOrEmpty(Model.Detalle)) { <p>@Model.Detalle</p> }
+    </div>
+</div>

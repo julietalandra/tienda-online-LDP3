@@ -1,0 +1,49 @@
+@page
+@model TiendaOnline_LDP3.Pages.Gestion.AltaModel
+@{ ViewData["Title"] = "Alta de producto"; }
+
+<a class="volver" asp-page="/Index"><span aria-hidden="true">←</span> Volver al inicio</a>
+<header class="encabezado-pagina"><h1>Alta de producto</h1><p>Completá los datos para registrar un nuevo producto.</p></header>
+<section class="panel panel-formulario" aria-label="Alta de producto">
+@if (Model.Registrado)
+{
+    <partial name="_Aviso" model="Model.Aviso!" />
+    <h2 class="nombre-registrado">@Model.NombreRegistrado</h2>
+    <p class="texto-secundario">@Model.PrecioRegistrado · @Model.CategoriaRegistrada</p>
+    <div class="acciones"><a class="boton boton-primario" asp-page="./Alta">Agregar otro producto</a></div>
+}
+else
+{
+    <h2 class="titulo-panel">Datos del producto</h2><p class="ayuda introduccion-formulario">Todos los campos son obligatorios.</p>
+    @if (Model.Aviso != null) { <partial name="_Aviso" model="Model.Aviso" /> }
+    @if (Model.Categorias.Count == 0)
+    { <p class="texto-secundario">No hay categorías disponibles. Ejecutá el script inicial de la base.</p> }
+    else
+    {
+        <form method="post" novalidate>
+
+<div class="campo">
+    <label asp-for="Nombre">Nombre</label>
+    <input asp-for="Nombre" maxlength="100" placeholder="Ej.: Soporte para notebook" aria-describedby="nombre-error" />
+    <span asp-validation-for="Nombre" id="nombre-error" class="error-campo"></span>
+</div>
+<div class="campo">
+    <label asp-for="Precio">Precio</label>
+    <input asp-for="Precio" inputmode="decimal" maxlength="22" placeholder="0,00" aria-describedby="precio-ayuda precio-error" />
+    <p class="ayuda" id="precio-ayuda">Precio en pesos argentinos (ARS). Ej.: 85000,00, sin separador de miles.</p>
+    <span asp-validation-for="Precio" id="precio-error" class="error-campo"></span>
+</div>
+<div class="campo">
+    <label asp-for="IdCategoria">Categoría</label>
+    <select asp-for="IdCategoria" asp-items="Model.Categorias" aria-describedby="categoria-ayuda categoria-error">
+        <option value="">Seleccioná una categoría</option>
+    </select>
+    <p class="ayuda" id="categoria-ayuda">Opciones: @string.Join(", ", Model.Categorias.Select(c => c.Text)).</p>
+    <span asp-validation-for="IdCategoria" id="categoria-error" class="error-campo"></span>
+</div>
+
+            <div class="acciones"><button class="boton boton-primario" type="submit">Confirmar</button></div>
+        </form>
+    }
+}
+</section>

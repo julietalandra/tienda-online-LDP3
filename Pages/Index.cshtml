@@ -1,10 +1,25 @@
-﻿@page
-@model IndexModel
+@page
+@model TiendaOnline_LDP3.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    Layout = "_LayoutGestion";
+    ViewData["Title"] = "Panel de gestión";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<header class="encabezado-pagina"><h1>Panel de gestión</h1><p>Elegí una operación para gestionar los productos de la tienda.</p></header>
+<div class="operaciones">
+    <a class="operacion" asp-page="/Gestion/Alta">
+        <div class="operacion-titulo"><span class="icono-fondo"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#plus"></use></svg></span><h2>Alta</h2></div>
+        <p>Registrá un producto con su nombre, precio y categoría.</p><span class="operacion-enlace">Agregar producto<span aria-hidden="true">→</span></span>
+    </a>
+    <a class="operacion" asp-page="/Gestion/Consulta">
+        <div class="operacion-titulo"><span class="icono-fondo"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#search"></use></svg></span><h2>Consulta</h2></div>
+        <p>Buscá productos y consultá los datos del catálogo.</p><span class="operacion-enlace">Consultar catálogo<span aria-hidden="true">→</span></span>
+    </a>
+    <a class="operacion" asp-page="/Gestion/Modificacion">
+        <div class="operacion-titulo"><span class="icono-fondo"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#edit"></use></svg></span><h2>Modificación</h2></div>
+        <p>Seleccioná un producto y actualizá sus datos.</p><span class="operacion-enlace">Editar producto<span aria-hidden="true">→</span></span>
+    </a>
+    <a class="operacion" asp-page="/Gestion/Baja">
+        <div class="operacion-titulo"><span class="icono-fondo"><svg class="icono" aria-hidden="true"><use href="@Url.Content("~/img/iconos.svg")#trash"></use></svg></span><h2>Baja</h2></div>
+        <p>Revisá los datos de un producto antes de eliminarlo.</p><span class="operacion-enlace">Eliminar producto<span aria-hidden="true">→</span></span>
+    </a>
 </div>

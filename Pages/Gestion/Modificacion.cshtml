@@ -1,0 +1,55 @@
+@page
+@model TiendaOnline_LDP3.Pages.Gestion.ModificacionModel
+@{ ViewData["Title"] = "Modificación de producto"; }
+
+<a class="volver" asp-page="/Index"><span aria-hidden="true">←</span> Volver al inicio</a>
+<header class="encabezado-pagina"><h1>Modificación de producto</h1><p>Seleccioná un producto para editar su información.</p></header>
+<section class="panel panel-formulario" aria-label="Modificación de producto">
+
+<form method="post" novalidate>
+
+    <div class="campo"><label asp-for="Id">Producto</label>
+        <select asp-for="Id" asp-items="Model.Productos" aria-describedby="producto-ayuda">
+            <option value="">Seleccioná un producto</option>
+        </select>
+        <p class="ayuda" id="producto-ayuda">Seleccioná un producto del catálogo y presioná Buscar.</p>
+        <span asp-validation-for="Id" class="error-campo"></span>
+    </div>
+    <button type="submit" class="boton boton-secundario" name="Accion" value="Buscar">Buscar</button>
+    <input type="hidden" asp-for="IdCargado" />
+
+
+    @if (Model.Aviso != null) { <div class="separador"></div><partial name="_Aviso" model="Model.Aviso" /> }
+    @if (Model.Seleccionado != null)
+    {
+        @if (Model.Aviso == null) { <div class="separador"></div> }
+        <h2 class="titulo-panel">Datos del producto</h2>
+        <p class="ayuda codigo introduccion-formulario">Código: @Model.Seleccionado.Codigo · No editable</p>
+
+
+<div class="campo">
+    <label asp-for="Nombre">Nombre</label>
+    <input asp-for="Nombre" maxlength="100" placeholder="Ej.: Soporte para notebook" aria-describedby="nombre-error" />
+    <span asp-validation-for="Nombre" id="nombre-error" class="error-campo"></span>
+</div>
+<div class="campo">
+    <label asp-for="Precio">Precio</label>
+    <input asp-for="Precio" inputmode="decimal" maxlength="22" placeholder="0,00" aria-describedby="precio-ayuda precio-error" />
+    <p class="ayuda" id="precio-ayuda">Precio en pesos argentinos (ARS). Ej.: 85000,00, sin separador de miles.</p>
+    <span asp-validation-for="Precio" id="precio-error" class="error-campo"></span>
+</div>
+<div class="campo">
+    <label asp-for="IdCategoria">Categoría</label>
+    <select asp-for="IdCategoria" asp-items="Model.Categorias" aria-describedby="categoria-ayuda categoria-error">
+        <option value="">Seleccioná una categoría</option>
+    </select>
+    <p class="ayuda" id="categoria-ayuda">Opciones: @string.Join(", ", Model.Categorias.Select(c => c.Text)).</p>
+    <span asp-validation-for="IdCategoria" id="categoria-error" class="error-campo"></span>
+</div>
+
+            <div class="acciones"><button type="submit" class="boton boton-primario" name="Accion" value="Modificar">Guardar cambios</button></div>
+    }
+    else
+    { <p class="texto-secundario instruccion">@(Model.Productos.Count == 0 ? "No hay productos para modificar." : "Elegí un producto para ver sus datos.")</p> }
+</form>
+</section>
