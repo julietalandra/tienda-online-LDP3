@@ -1,7 +1,6 @@
 # >_ Commit Store
 
-Sistema de gestión de productos de una tienda de accesorios para computadoras y escritorios. <br>
-Proyecto del primer parcial de Laboratorio de Programación 3, desarrollado por **Julieta Landra**.
+Sistema de gestión de productos de una tienda de accesorios para computadoras y escritorios. Proyecto del primer parcial de Laboratorio de Programación 3, desarrollado por **Julieta Landra**.
 
 ## Funcionalidades
 
@@ -22,10 +21,10 @@ Proyecto del primer parcial de Laboratorio de Programación 3, desarrollado por 
 
 | Tabla | Campos |
 |---|---|
-| categorias | idCategoria (PK, identity), descripcion |
-| productos | idProducto (PK, identity), nombre, precio decimal(18,2), categoria (FK) |
+| categorías | idCategoria (PK, identity), descripción |
+| productos | idProducto (PK, identity), nombre, precio decimal(18,2), categoría (FK) |
 
-`productos.categoria` referencia `categorias.idCategoria`. Los códigos CS-001 son la presentación del ID numérico, no claves diferentes. No se renumeran después de una baja.
+`productos.[categoría]` referencia `[categorías].idCategoria`. Los códigos CS-001 son la presentación del ID numérico, no claves diferentes. No se renumeran después de una baja.
 
 ## Ejecución inicial
 
@@ -47,9 +46,10 @@ Se aceptan precios como `85000`, `85000,00` y `85000.00`, sin separador de miles
 
 ## Alcance y revisión
 
-La implementación usa Razor Pages, admitido por el profesor en las clases grabadas, con ADO.NET como equivalente de SqlDataSource. La tienda pública queda como una ampliación futura.
+La implementación usa Razor Pages, con ADO.NET como equivalente de SqlDataSource. La tienda pública queda como una ampliación futura.
 
-## Información de materia
+## Información de la materia
+
 - **Profesor**: Christian Mansilla
 - **6to Semetre 2026**
 - **Instituto Superior Santo Domingo**

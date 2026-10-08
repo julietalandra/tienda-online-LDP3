@@ -29,6 +29,8 @@ public class ModificacionModel : PageModel
         CargarProductos();
         if (Id.HasValue) Buscar();
     }
+
+    // Los dos botones envían Accion, como en el ejemplo de la guía 5.
     public void OnPost()
     {
         CargarCategorias();
@@ -49,7 +51,7 @@ public class ModificacionModel : PageModel
         Precio = Seleccionado.Precio.ToString("F2", CultureInfo.GetCultureInfo("es-AR"));
         IdCategoria = Seleccionado.IdCategoria;
         IdCargado = Id;
-
+        // Permite que asp-for muestre los valores recién leídos de la base.
         ModelState.Clear();
     }
 
@@ -78,7 +80,7 @@ public class ModificacionModel : PageModel
         {
             conexion.Open();
             string sql = @"update productos set nombre = @nombre, precio = @precio,
-                                                 categoria = @categoria
+                                                 [categoría] = @categoria
                             where idProducto = @id";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
@@ -111,6 +113,7 @@ public class ModificacionModel : PageModel
             || decimal.Round(precio, 2) != precio)
             ModelState.AddModelError(nameof(Precio), "Ingresá un precio mayor que cero, con hasta dos decimales y sin separador de miles.");
 
+        // Las opciones vienen de la base, también se comprueba lo enviado.
         if (!IdCategoria.HasValue || !Categorias.Any(c => c.Value == IdCategoria.Value.ToString()))
             ModelState.AddModelError(nameof(IdCategoria), "Seleccioná una categoría válida.");
 
@@ -126,14 +129,14 @@ public class ModificacionModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = "select idCategoria, descripcion from categorias order by idCategoria";
+            string sql = "select idCategoria, [descripción] from [categorías] order by idCategoria";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             using (SqlDataReader registros = comando.ExecuteReader())
             {
                 while (registros.Read())
                 {
                     Categorias.Add(new SelectListItem(
-                        registros["descripcion"].ToString(),
+                        registros["descripción"].ToString(),
                         registros["idCategoria"].ToString()));
                 }
             }
@@ -169,10 +172,10 @@ public class ModificacionModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = @"select p.idProducto, p.nombre, p.precio, p.categoria,
-                                  c.descripcion as descripcionCategoria
+            string sql = @"select p.idProducto, p.nombre, p.precio, p.[categoría],
+                                  c.[descripción] as descripcionCategoria
                              from productos as p
-                             join categorias as c on p.categoria = c.idCategoria
+                             join [categorías] as c on p.[categoría] = c.idCategoria
                             where p.idProducto = @id";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
@@ -186,7 +189,7 @@ public class ModificacionModel : PageModel
                             IdProducto = Convert.ToInt32(registro["idProducto"]),
                             Nombre = registro["nombre"].ToString()!,
                             Precio = Convert.ToDecimal(registro["precio"]),
-                            IdCategoria = Convert.ToInt32(registro["categoria"]),
+                            IdCategoria = Convert.ToInt32(registro["categoría"]),
                             CategoriaDescripcion = registro["descripcionCategoria"].ToString()!
                         };
                     }

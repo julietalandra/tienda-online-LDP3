@@ -38,13 +38,14 @@ public class AltaModel : PageModel
 
     public IActionResult OnPost()
     {
+        // Igual que CargarRubros en la guía: llamar también después del POST.
         CargarCategorias();
         if (!ValidarDatos(out decimal precio)) return Page();
         string cadena = _config.GetConnectionString("CommitStore")!;
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = "insert into productos(nombre, precio, categoria) values(@nombre, @precio, @categoria)";
+            string sql = "insert into productos(nombre, precio, [categoría]) values(@nombre, @precio, @categoria)";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
                 comando.Parameters.AddWithValue("@nombre", Nombre!.Trim());
@@ -53,6 +54,7 @@ public class AltaModel : PageModel
                 comando.ExecuteNonQuery();
             }
         }
+        // Se conserva la redirección para no duplicar el alta al refrescar.
         TempData["AltaNombre"] = Nombre!.Trim();
         TempData["AltaPrecio"] = precio.ToString("C2", CultureInfo.GetCultureInfo("es-AR"));
         TempData["AltaCategoria"] = Categorias.First(c => c.Value == IdCategoria!.Value.ToString()).Text;
@@ -74,6 +76,7 @@ public class AltaModel : PageModel
             || decimal.Round(precio, 2) != precio)
             ModelState.AddModelError(nameof(Precio), "Ingresá un precio mayor que cero, con hasta dos decimales y sin separador de miles.");
 
+        // Las opciones vienen de la base, también se comprueba lo enviado.
         if (!IdCategoria.HasValue || !Categorias.Any(c => c.Value == IdCategoria.Value.ToString()))
             ModelState.AddModelError(nameof(IdCategoria), "Seleccioná una categoría válida.");
 
@@ -89,14 +92,14 @@ public class AltaModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = "select idCategoria, descripcion from categorias order by idCategoria";
+            string sql = "select idCategoria, [descripción] from [categorías] order by idCategoria";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             using (SqlDataReader registros = comando.ExecuteReader())
             {
                 while (registros.Read())
                 {
                     Categorias.Add(new SelectListItem(
-                        registros["descripcion"].ToString(),
+                        registros["descripción"].ToString(),
                         registros["idCategoria"].ToString()));
                 }
             }

@@ -105,10 +105,10 @@ public class BajaModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = @"select p.idProducto, p.nombre, p.precio, p.categoria,
-                                  c.descripcion as descripcionCategoria
+            string sql = @"select p.idProducto, p.nombre, p.precio, p.[categoría],
+                                  c.[descripción] as descripcionCategoria
                              from productos as p
-                             join categorias as c on p.categoria = c.idCategoria
+                             join [categorías] as c on p.[categoría] = c.idCategoria
                             where p.idProducto = @id";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
@@ -122,7 +122,7 @@ public class BajaModel : PageModel
                             IdProducto = Convert.ToInt32(registro["idProducto"]),
                             Nombre = registro["nombre"].ToString()!,
                             Precio = Convert.ToDecimal(registro["precio"]),
-                            IdCategoria = Convert.ToInt32(registro["categoria"]),
+                            IdCategoria = Convert.ToInt32(registro["categoría"]),
                             CategoriaDescripcion = registro["descripcionCategoria"].ToString()!
                         };
                     }

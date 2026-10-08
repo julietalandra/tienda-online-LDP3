@@ -39,12 +39,12 @@ public class ConsultaModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = @"select p.idProducto, p.nombre, p.precio, p.categoria,
-                                  c.descripcion as descripcionCategoria
+            string sql = @"select p.idProducto, p.nombre, p.precio, p.[categoría],
+                                  c.[descripción] as descripcionCategoria
                              from productos as p
-                             join categorias as c on p.categoria = c.idCategoria
+                             join [categorías] as c on p.[categoría] = c.idCategoria
                             where p.nombre like @nombre
-                              and (@categoria = 0 or p.categoria = @categoria)
+                              and (@categoria = 0 or p.[categoría] = @categoria)
                             order by p.idProducto";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
@@ -59,7 +59,7 @@ public class ConsultaModel : PageModel
                             IdProducto = Convert.ToInt32(registros["idProducto"]),
                             Nombre = registros["nombre"].ToString()!,
                             Precio = Convert.ToDecimal(registros["precio"]),
-                            IdCategoria = Convert.ToInt32(registros["categoria"]),
+                            IdCategoria = Convert.ToInt32(registros["categoría"]),
                             CategoriaDescripcion = registros["descripcionCategoria"].ToString()!
                         });
                     }
@@ -75,14 +75,14 @@ public class ConsultaModel : PageModel
         using (SqlConnection conexion = new SqlConnection(cadena))
         {
             conexion.Open();
-            string sql = "select idCategoria, descripcion from categorias order by idCategoria";
+            string sql = "select idCategoria, [descripción] from [categorías] order by idCategoria";
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             using (SqlDataReader registros = comando.ExecuteReader())
             {
                 while (registros.Read())
                 {
                     Categorias.Add(new SelectListItem(
-                        registros["descripcion"].ToString(),
+                        registros["descripción"].ToString(),
                         registros["idCategoria"].ToString()));
                 }
             }
